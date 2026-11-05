@@ -30,8 +30,16 @@ function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
           className="counter"
           onClick={() => setCurrentView('navigation')} /* {() => setCount((count) => count + 1)} */
         >
-          Scan{/* {count} */} Image
+          Scan Image
+
         </button>
+        <fieldset className="options">
+          <legend>Options</legend>
+          <label>
+            <input type="checkbox" name="option1" />
+            Display sensitive metadata only
+          </label>
+        </fieldset>
       </section>
 
       <div className="ticks"></div>
