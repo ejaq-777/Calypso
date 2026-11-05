@@ -1,5 +1,5 @@
 .counter {
-  font-size: 16px;
+  font-size: 26px;
   padding: 5px 10px;
   border-radius: 5px;
   color: var(--accent);
@@ -28,8 +28,9 @@
   }
 
   .base {
-    width: 170px;
+    width: 300px;
     position: relative;
+    object-fit: contain;
     z-index: 0;
   }
 
