@@ -22,7 +22,7 @@ function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
         <div>
           <h1>Drop a .JPEG file</h1>
           <p>
-            Then hit the scan button to start
+            Click Scan Image to view security risks
           </p>
         </div>
         <button
