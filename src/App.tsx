@@ -20,7 +20,7 @@ function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
           {/* <img src={viteLogo} className="vite" alt="Vite logo" /> */}
         </div>
         <div>
-          <h1>Drop Image</h1>
+          <h1>Drop a .JPEG file</h1>
           <p>
             Then hit the scan button to start
           </p>
