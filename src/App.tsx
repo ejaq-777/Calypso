@@ -45,18 +45,6 @@ function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
           <p>Wiki Page and more</p>
           <ul>
             <li>
-              <a href="https://github.com/ejaq-777/Calypso/wiki" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
               <a href="https://vite.dev/" target="_blank">
                 <img className="logo" src={viteLogo} alt="" />
                 Vite
