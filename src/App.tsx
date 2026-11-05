@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import dropFileSvg from './assets/dropFile.svg'
+import calypsoLogo from './assets/calypsoLogo.svg'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
@@ -10,6 +11,9 @@ function App() {
 
   return (
     <>
+      <section id="topleft">
+        <img src={calypsoLogo} className="base" width="160" height="160"/>
+      </section>
       <section id="center">
         <div className="hero">
           <img src={dropFileSvg} className="base" width="300" height="300" alt="" />

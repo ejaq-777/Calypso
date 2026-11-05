@@ -17,6 +17,12 @@
   }
 }
 
+#topleft {
+  position: absolute;
+  place-content: left;
+  place-items: left;
+}
+
 .hero {
   position: relative;
 
