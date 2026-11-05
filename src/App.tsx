@@ -74,8 +74,8 @@ function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
           <svg className="icon" role="presentation" aria-hidden="true">
             <use href="/icons.svg#social-icon"></use>
           </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Calypso community</p>
+          <h2>See the repository</h2>
+          <p>View the GitHub repo:</p>
           <ul>
             <li>
               <a href="https://github.com/ejaq-777/Calypso" target="_blank">
