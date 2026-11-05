@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import dropFileSvg from './assets/dropFile.svg'
 import calypsoLogo from './assets/calypsoLogo.svg'
-import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
