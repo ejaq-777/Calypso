@@ -2,8 +2,8 @@
   font-size: 26px;
   padding: 5px 10px;
   border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
+  color: #66ff44;
+  background: #227722;
   border: 2px solid transparent;
   transition: border-color 0.3s;
   margin-bottom: 24px;

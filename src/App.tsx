@@ -6,8 +6,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
 
   return (
     <>
@@ -29,9 +28,9 @@ function App() {
         <button
           type="button"
           className="counter"
-          onClick={() => setCount((count) => count + 1)}
+          onClick={() => setCurrentView('navigation')} /* {() => setCount((count) => count + 1)} */
         >
-          Scan {count} Image
+          Scan{/* {count} */} Image
         </button>
       </section>
 
