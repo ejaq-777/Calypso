@@ -1,15 +1,19 @@
 export default function Warnings({ setCurrentView }: { setCurrentView: (view: string) => void }) {
 return (
-<section>
 
+<div>
   <button 
+    style={{width:'100px', height:'30px'}}
     type="button"
     onClick={() => setCurrentView('navigation')}
-    >&larr; Back</button>
+  >&larr; Back</button>
+<div style={{ textAlign: 'left', padding: '50px', color: 'white' }}>
 
-  <img src="./src/assets/warningIcon.jpg" alt="Warning icon"/>
-  <h1>Warnings</h1>
-
+  <div style={{ textAlign: 'center'}}>
+    <img src="./src/assets/warning.svg" alt="Warning icon"/>
+    <h1>Warnings</h1>
+  </div>
+  
   <ul>
     <li>Metadata exposes location
       <ul>
@@ -29,7 +33,7 @@ return (
       </ul>
     </li>
   </ul>
-
-</section>
+</div>
+</div>
 )
 }
