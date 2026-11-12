@@ -3,6 +3,7 @@ import calypsoLogo from './assets/calypsoLogo.svg'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
+import DropZone from './DropZone'
 
 function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
 
@@ -17,6 +18,7 @@ function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
           {/* <img src={reactLogo} className="framework" alt="React logo" /> */}
           {/* <img src={viteLogo} className="vite" alt="Vite logo" /> */}
         </div>
+        <DropZone />
         <div>
           <h1>Drop a .JPEG file</h1>
           <p>
@@ -29,7 +31,6 @@ function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
           onClick={() => setCurrentView('navigation')} /* {() => setCount((count) => count + 1)} */
         >
           Scan Image
-
         </button>
         <fieldset className="options">
           <legend>Options</legend>
