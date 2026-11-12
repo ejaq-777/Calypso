@@ -47,7 +47,7 @@ export default function DropZone() {
         cursor: 'pointer',
       }}
     >
-      <p>Drag and drop a JPEG image here to extract EXIF data</p>
+      <p>Drop jpeg here to extract image data</p>
       <p style={{ fontWeight: 'bold', color: '#007bff' }}>{status}</p>
     </div>
   );

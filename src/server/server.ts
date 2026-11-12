@@ -38,7 +38,7 @@ app.post('/api/images/upload', upload.single('image'), async (req: Request, res:
     }
 
     // Write the memory buffer to a temporary file so exiftool can read it
-    tempFilePath = path.join(os.tmpdir(), `calypso-temp-temp-${Date.now()}-${req.file.originalname}`);
+    tempFilePath = path.join(os.tmpdir(), `calypso-temp-${Date.now()}-${req.file.originalname}`);
     fs.writeFileSync(tempFilePath, req.file.buffer);
 
     // Extract metadata using exiftool-vendored
