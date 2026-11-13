@@ -9,6 +9,16 @@ export default function DropZone({onUploadSuccess}: {onUploadSuccess?: () => voi
     const file = e.dataTransfer.files?.[0];
     if (!file) return;
 
+    if (file.type !== 'image/jpeg' || !/\.jpe?g$/i.test(file.name)) {
+  setStatus('Error: Please upload a JPEG (.jpg or .jpeg) file.');
+  return;
+}
+
+if (file.size === 0) {
+  setStatus('Error: The selected JPEG file is empty.');
+  return;
+}
+
     setStatus(`Processing ${file.name}...`);
 
     const formData = new FormData();
