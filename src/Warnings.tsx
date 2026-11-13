@@ -75,6 +75,9 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
               {selectedImage.location && selectedImage.location.latitude ? (
                 <p style={{ color: '#ffc078', margin: '0 0 10px 0' }}>
                   GPS Location: Latitude {selectedImage.location.latitude}, Longitude {selectedImage.location.longitude}
+                  {/* TODO: openstreetmap API to display location?
+                  it may be a bad idea to give out location data
+                  along with an IP address... */}
                 </p>
               ) : (
                 <p style={{ color: '#51cf66', fontWeight: 'bold', margin: '0 0 10px 0' }}>
