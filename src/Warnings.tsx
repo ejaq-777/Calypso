@@ -1,7 +1,61 @@
 // src/Warnings.tsx
 import { type PageProps } from './types';
 
+// Metadata fields that may expose sensitive information
+const SENSITIVE_METADATA_FIELDS = {
+  timestamp: [
+    'DateTime',
+    'DateTimeOriginal',
+    'DateTimeDigitized',
+    'CreateDate',
+    'ModifyDate',
+    'DateTimeCreated',
+  ],
+  device: [
+    'Make',
+    'Model',
+    'Software',
+    'LensModel',
+    'BodySerialNumber',
+    'SerialNumber',
+  ],
+  identity: [
+    'Artist',
+    'Copyright',
+    'OwnerName',
+    'CameraOwnerName',
+    'UserComment',
+  ],
+};
+
 export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
+  // Extract metadata from the selected image
+  const metadata = selectedImage?.metadata || {};
+
+  // Detect sensitive metadata fields
+  const detectSensitiveFields = (fields: string[]) => {
+    return fields.filter((field) => {
+      const value = metadata[field];
+      return value !== undefined && value !== null && value !== '';
+    });
+  };
+
+  const timestampWarnings = detectSensitiveFields(
+    SENSITIVE_METADATA_FIELDS.timestamp
+  );
+
+  const deviceWarnings = detectSensitiveFields(
+    SENSITIVE_METADATA_FIELDS.device
+  );
+
+  const identityWarnings = detectSensitiveFields(
+    SENSITIVE_METADATA_FIELDS.identity
+  );
+
+  const hasSensitiveMetadata =
+    timestampWarnings.length > 0 ||
+    deviceWarnings.length > 0 ||
+    identityWarnings.length > 0;
   return (
     <div>
       <div style={{ position: 'fixed' }}>
@@ -40,8 +94,8 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
       {!selectedImage ? (
         <div style={{ marginTop: '40px', color: '#888' }}>
           <p>No image selected for inspection.</p>
-          <button 
-            onClick={() => setCurrentView('navigation')} 
+          <button
+            onClick={() => setCurrentView('navigation')}
             style={{ marginTop: '10px', padding: '8px 16px', cursor: 'pointer' }}
           >
             Return to Navigation
@@ -53,21 +107,22 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
           <section style={{ margin: '30px 0 0 200px' }}>
             <h2
               style={{
-                borderBottom: `2px solid ${selectedImage.location ? '#ffa94d' : '#51cf66'}`,
+                borderBottom: `2px solid ${(selectedImage.location || hasSensitiveMetadata) ? '#ffa94d' : '#51cf66'}`,
                 paddingBottom: '8px',
-                color: selectedImage.location ? '#ffa94d' : '#51cf66',
+                color: (selectedImage.location || hasSensitiveMetadata) ? '#ffa94d' : '#51cf66',
               }}
             >
-              {selectedImage.location ? '⚠️ Privacy Risk Summary' : '✓ Security Status: Secure'}
+              {(selectedImage.location || hasSensitiveMetadata)
+                ? '⚠️ Privacy Risk Summary'
+                : '✓ No Sensitive Metadata Detected'}
             </h2>
 
             <div
               style={{
-                border: `1px solid ${selectedImage.location ? '#ffa94d' : '#51cf66'}`,
+                border: `1px solid ${(selectedImage.location || hasSensitiveMetadata) ? '#ffa94d' : '#51cf66'}`,
                 borderRadius: '8px',
                 padding: '20px',
-                background: selectedImage.location ? '#2d1f13' : '#142918',
-                marginTop: '15px',
+                background: (selectedImage.location || hasSensitiveMetadata) ? '#2d1f13' : '#142918',
               }}
             >
               <h3 style={{ margin: '0 0 10px 0' }}>{selectedImage.originalName}</h3>
@@ -99,6 +154,58 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
                 </p>
               ) : null} */}
 
+{timestampWarnings.length > 0 && (
+  <div style={{ marginTop: '15px', color: '#ffc078' }}>
+    <strong>⚠️ Timestamp Metadata Detected</strong>
+    <p>
+      This image contains date or time information that
+      could reveal when the photo was taken or modified.
+    </p>
+    <ul>
+      {timestampWarnings.map((field) => (
+        <li key={field}>
+          {field}: {String(metadata[field])}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+{deviceWarnings.length > 0 && (
+  <div style={{ marginTop: '15px', color: '#ffc078' }}>
+    <strong>⚠️ Device Information Detected</strong>
+    <p>
+      This image contains device information that
+      could reveal the camera or software used.
+    </p>
+    <ul>
+      {deviceWarnings.map((field) => (
+        <li key={field}>
+          {field}: {String(metadata[field])}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+{identityWarnings.length > 0 && (
+  <div style={{ marginTop: '15px', color: '#ffc078' }}>
+    <strong>⚠️ Personal Identity Metadata Detected</strong>
+    <p>
+      This image contains information that may reveal
+      the photographer's identity or ownership details.
+    </p>
+    <ul>
+      {identityWarnings.map((field) => (
+        <li key={field}>
+          {field}: {String(metadata[field])}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+
               <small style={{ color: '#aaa' }}>
                 Uploaded: {new Date(selectedImage.createdAt).toLocaleString()} | Size: {(selectedImage.fileSize / 1024).toFixed(1)} KB
               </small>
@@ -123,7 +230,7 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
               }}
             >
               <h3 style={{ textAlign: 'center', margin: '0 0 10px 0', color: '#74c0fc' }}>{selectedImage.originalName}</h3>
-              
+
               {/* Formatted JSON view of extracted EXIF metadata */}
               <div
                 style={{
