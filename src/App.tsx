@@ -22,7 +22,7 @@ function App({ setCurrentView, warningsOnly, setWarningsOnly }: PageProps) {
         <div>
           <h1>Drop a .JPEG file</h1>
           <p>
-            Click Scan to view security risks
+            then click "View recent images" for observable metadata
           </p>
         </div>
         <button
@@ -34,7 +34,7 @@ function App({ setCurrentView, warningsOnly, setWarningsOnly }: PageProps) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
-          Scan {loadingCount ? '...' : count} Images
+          View {loadingCount ? '...' : count} Images
         </button>
         <fieldset className="options">
           <legend>Filter Options</legend>
