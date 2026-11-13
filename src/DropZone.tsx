@@ -1,48 +1,73 @@
 import { useState, type DragEvent } from 'react';
 import dropFileSvg from './assets/dropFile.svg'
 
+function isJpeg(file: File) {
+  return file.type === 'image/jpeg' || /\.jpe?g$/i.test(file.name);
+}
+
+async function uploadFile(file: File): Promise<void> {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const response = await fetch('/api/images/upload', {
+    method: 'POST',
+    body: formData, // Multer handles multipart form boundaries automatically
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || `HTTP ${response.status}`);
+  }
+}
+
 export default function DropZone({onUploadSuccess}: {onUploadSuccess?: () => void}) {
   const [status, setStatus] = useState<string>('');
+  const [failures, setFailures] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
 
   const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const file = e.dataTransfer.files?.[0];
-    if (!file) return;
+    if (uploading) return;
 
-    if (file.type !== 'image/jpeg' || !/\.jpe?g$/i.test(file.name)) {
-  setStatus('Error: Please upload a JPEG (.jpg or .jpeg) file.');
-  return;
-}
+    const dropped = Array.from(e.dataTransfer.files ?? []);
+    if (dropped.length === 0) return;
 
-if (file.size === 0) {
-  setStatus('Error: The selected JPEG file is empty.');
-  return;
-}
+    const files = dropped.filter(isJpeg);
+    const skipped = dropped.length - files.length;
+    setFailures([]);
 
-    setStatus(`Processing ${file.name}...`);
+    if (files.length === 0) {
+      setStatus('No JPEG files found in drop.');
+      return;
+    }
 
-    const formData = new FormData();
-    formData.append('image', file);
+    setUploading(true);
+    let done = 0;
+    let succeeded = 0;
+    const failed: string[] = [];
+    const total = files.length;
 
-    try {
-      const response = await fetch('/api/images/upload', {
-        method: 'POST',
-        body: formData, // Multer handles multipart form boundaries automatically
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setStatus(`Success! Saved ID: ${data.id}`);
-
-        if (onUploadSuccess) {
-          onUploadSuccess();
-        }
-      } else {
-        setStatus(`Error: ${data.error}`);
+    // Upload files one at a time, waiting for each to finish before starting the next
+    for (const file of files) {
+      setStatus(`Processing ${file.name} (${done + 1} of ${total})...`);
+      try {
+        await uploadFile(file);
+        succeeded++;
+      } catch (err) {
+        console.error(`Upload failed for ${file.name}:`, err);
+        failed.push(`${file.name}: ${err instanceof Error ? err.message : 'Network or server error'}`);
       }
-    } catch (err) {
-      console.error(err);
-      setStatus('Network or server error during upload.');
+      done++;
+    }
+
+    const parts = [`Uploaded ${succeeded} of ${total} file${total === 1 ? '' : 's'}.`];
+    if (skipped > 0) parts.push(`Skipped ${skipped} non-JPEG file${skipped === 1 ? '' : 's'}.`);
+    setStatus(parts.join(' '));
+    setFailures(failed);
+    setUploading(false);
+
+    if (succeeded > 0 && onUploadSuccess) {
+      onUploadSuccess();
     }
   };
 
@@ -59,7 +84,7 @@ if (file.size === 0) {
         padding: '40px',
         textAlign: 'center',
         borderRadius: '8px',
-        cursor: 'pointer',
+        cursor: uploading ? 'progress' : 'pointer',
         marginTop: '20px',
       }}
     >
@@ -68,8 +93,13 @@ if (file.size === 0) {
           {/* <img src={reactLogo} className="framework" alt="React logo" /> */}
           {/* <img src={viteLogo} className="vite" alt="Vite logo" /> */}
       </div>
-      <p>Drop jpeg here to extract image data</p>
+      <p>Drop one or more jpegs here to extract image data</p>
       <p style={{ fontWeight: 'bold', color: '#007bff' }}>{status}</p>
+      {failures.length > 0 && (
+        <ul style={{ color: '#c0392b', textAlign: 'left', display: 'inline-block' }}>
+          {failures.map((f) => <li key={f}>{f}</li>)}
+        </ul>
+      )}
     </div>
   );
 }
