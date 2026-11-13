@@ -137,7 +137,10 @@ export default function Navigation({ setCurrentView, warningsOnly, setWarningsOn
                     <div style={{ display: 'grid', gap: '15px', marginTop: '20px' }}>
                         {images.map((img) => {
                         const hasLocation = img.location; //&& img.location.latitude && img.location.longitude;
-
+                         const hasCameraInfo = img.metadata && (img.metadata.make || img.metadata.model);
+                        // hasWarnings check expands as we get through more metadata fields
+                        const hasWarnings = hasLocation || hasCameraInfo;
+                        const hasSecondaryWarnings = img.metadata && (img.metadata.dateTimeOriginal || img.metadata.fileCreateDate);
                         return (
                             <div
                                 key={img._id}
@@ -164,15 +167,23 @@ export default function Navigation({ setCurrentView, warningsOnly, setWarningsOn
                                     </button>
                                 </div>
                                 
-                                {hasLocation ? (
-                                    <p style={{ color: '#ffa94d', margin: '0 0 10px 0' }}>
-                                    ⚠️ Warning: Potential location metadata detected
+                                {hasWarnings ? (
+                                    <p style={{ color: '#f36565', margin: '0 0 10px 0' }}>
+                                    Warning: Potential sensitive metadata detected
                                     </p>
-                                ) : (
+                                ) : null}
+
+                                {hasSecondaryWarnings ? (
+                                    <p style={{ color: '#fffc4d', margin: '0 0 10px 0' }}>
+                                    Secondary metadata detected
+                                    </p>
+                                ) : null}
+
+                                {!hasWarnings && !hasSecondaryWarnings ? (
                                     <p style={{ color: '#51cf66', margin: '0 0 10px 0' }}>
-                                    ✓ No sensitive location metadata detected
+                                    ✓ No sensitive metadata detected
                                     </p>
-                                )}
+                                ) : null}
 
                                 <small style={{ color: '#888' }}>
                                     Uploaded: {new Date(img.createdAt).toLocaleString()} | Size: {(img.fileSize / 1024).toFixed(1)} KB

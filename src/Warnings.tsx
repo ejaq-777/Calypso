@@ -73,14 +73,28 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
               <h3 style={{ margin: '0 0 10px 0' }}>{selectedImage.originalName}</h3>
 
               {selectedImage.location && selectedImage.location.latitude ? (
-                <p style={{ color: '#ffc078', fontWeight: 'bold', margin: '0 0 10px 0' }}>
-                  ⚠️ GPS Location Exposed: Latitude {selectedImage.location.latitude}, Longitude {selectedImage.location.longitude}
+                <p style={{ color: '#ffc078', margin: '0 0 10px 0' }}>
+                  GPS Location: Latitude {selectedImage.location.latitude}, Longitude {selectedImage.location.longitude}
                 </p>
               ) : (
                 <p style={{ color: '#51cf66', fontWeight: 'bold', margin: '0 0 10px 0' }}>
-                  ✓ Secure: No sensitive location metadata detected for this file.
+                  ✓ No sensitive location metadata detected for this file.
                 </p>
               )}
+              {selectedImage.metadata && (selectedImage.metadata.make || selectedImage.metadata.model) ? (
+                <p style={{ color: '#ffc078', margin: '0 0 10px 0' }}>
+                  Camera Make: {selectedImage.metadata.make || 'Unknown Make'}
+                  <br />
+                  Camera Model: {selectedImage.metadata.model || 'Unknown Model'}
+                </p>
+              ) : null}
+
+              {/* FIXME: needs formatting.
+               {selectedImage.metadata && (selectedImage.metadata.dateTimeOriginal || selectedImage.metadata.fileCreateDate) ? (
+                <p style={{ color: '#ffc078', margin: '0 0 10px 0' }}>
+                  Original Date/Time: {selectedImage.metadata.dateTimeOriginal || selectedImage.metadata.fileCreateDate}
+                </p>
+              ) : null} */}
 
               <small style={{ color: '#aaa' }}>
                 Uploaded: {new Date(selectedImage.createdAt).toLocaleString()} | Size: {(selectedImage.fileSize / 1024).toFixed(1)} KB
