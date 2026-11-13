@@ -49,6 +49,12 @@ export default function DropZone({onUploadSuccess}: {onUploadSuccess?: () => voi
 
     // Upload files one at a time, waiting for each to finish before starting the next
     for (const file of files) {
+
+      if (file.size === 0) {
+        setStatus('Error: The selected JPEG file is empty.');
+        return;
+      }
+
       setStatus(`Processing ${file.name} (${done + 1} of ${total})...`);
       try {
         await uploadFile(file);

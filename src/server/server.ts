@@ -38,6 +38,23 @@ app.post('/api/images/upload', upload.single('image'), async (req: Request, res:
       return res.status(400).json({ error: 'No image file uploaded.' });
     }
 
+    // Validate the uploaded JPEG before processing or storing it
+    const validExtension = /\.jpe?g$/i.test(req.file.originalname);
+    const validMimeType = req.file.mimetype === 'image/jpeg';
+
+    const buffer = req.file.buffer;
+    const validJpegHeader =
+      buffer.length >= 3 &&
+      buffer[0] === 0xff &&
+      buffer[1] === 0xd8 &&
+      buffer[2] === 0xff;
+
+    if (!validExtension || !validMimeType || !validJpegHeader) {
+      return res.status(400).json({
+        error: 'Invalid JPEG file. Please upload a valid .jpg or .jpeg image.',
+      });
+    }
+
     // Write the memory buffer to a temporary file so exiftool can read it
     tempFilePath = path.join(os.tmpdir(), `calypso-temp-${Date.now()}-${req.file.originalname}`);
     fs.writeFileSync(tempFilePath, req.file.buffer);
