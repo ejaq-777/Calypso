@@ -52,7 +52,8 @@ export default function DropZone({onUploadSuccess}: {onUploadSuccess?: () => voi
 
       if (file.size === 0) {
         setStatus('Error: The selected JPEG file is empty.');
-        return;
+        failed.push(`${file.name} : JPEG file is empty`);
+        continue;
       }
 
       setStatus(`Processing ${file.name} (${done + 1} of ${total})...`);
