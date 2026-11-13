@@ -25,7 +25,10 @@ function App({ setCurrentView, warningsOnly, setWarningsOnly }: PageProps) {
         <button
           type="button"
           className="counter"
-          onClick={() => setCurrentView('navigation')} /* {() => setCount((count) => count + 1)} */
+          onClick={() => {
+            setCurrentView('navigation'); 
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
         >
           Scan Image
         </button>
@@ -36,8 +39,9 @@ function App({ setCurrentView, warningsOnly, setWarningsOnly }: PageProps) {
               name="option1" 
               checked={warningsOnly}
               onChange={(e) => setWarningsOnly(e.target.checked)}
+              style={{ marginRight: '8px' }}
             />
-            Display sensitive metadata only
+            Display warnings only
           </label>
         </fieldset>
       </section>

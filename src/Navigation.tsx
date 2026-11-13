@@ -1,19 +1,7 @@
 import { useEffect, useState } from 'react';
-import { type PageProps } from './types';
+import { type PageProps, type ImageRecord } from './types';
 
-// Define the shape of image document summary
-interface ImageRecord {
-  _id: string;
-  originalName: string;
-  fileSize: number;
-  location?: {
-    latitude?: number;
-    longitude?: number;
-  };
-  createdAt: string;
-}
-
-export default function Navigation({ setCurrentView, warningsOnly, setWarningsOnly }: PageProps) {
+export default function Navigation({ setCurrentView, warningsOnly, setWarningsOnly, setSelectedImage }: PageProps) {
     const [images, setImages] = useState<ImageRecord[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -52,9 +40,15 @@ export default function Navigation({ setCurrentView, warningsOnly, setWarningsOn
                 <h1>Navigation</h1>
                 <p>Select a page to visit:</p>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '300px', margin: '20px auto' }}>
-                    <button onClick={() => setCurrentView('App')}>Go to Home / Scan</button>
-                    <button onClick={() => setCurrentView('warnings')}>Go to Warnings</button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '200px', margin: '20px auto' }}>
+                    <button onClick={() => {
+                        setCurrentView('App'); 
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }} 
+                    style={{ padding: '8px 16px', cursor: 'pointer' }}
+                    >
+                        Go to Home / Scan
+                    </button>
                 </div>
                 <section style={{
                     maxWidth: '650px',
@@ -72,7 +66,7 @@ export default function Navigation({ setCurrentView, warningsOnly, setWarningsOn
                             onChange={(e) => setWarningsOnly(e.target.checked)}
                             style={{ marginRight: '8px' }}
                             />
-                            Display sensitive metadata only
+                            Display warnings only
                         </label>
                         </fieldset>
                     </div>
@@ -91,29 +85,42 @@ export default function Navigation({ setCurrentView, warningsOnly, setWarningsOn
 
                         return (
                             <div
-                            key={img._id}
-                            style={{
-                                border: '1px solid #333',
-                                borderRadius: '8px',
-                                padding: '20px',
-                                background: '#2d2d2d',
-                            }}
-                            >
-                            <h3 style={{ margin: '0 0 10px 0' }}>{img.originalName}</h3>
-                            
-                            {hasLocation ? (
-                                <p style={{ color: '#ffa94d', margin: '0 0 10px 0' }}>
-                                ⚠️ Warning: Potential location metadata detected
-                                </p>
-                            ) : (
-                                <p style={{ color: '#51cf66', margin: '0 0 10px 0' }}>
-                                ✓ No sensitive location metadata detected
-                                </p>
-                            )}
+                                key={img._id}
+                                style={{
+                                    border: '1px solid #333',
+                                    borderRadius: '8px',
+                                    padding: '20px',
+                                    background: '#2d2d2d',
+                                }}
+                                >
+                                <h3 style={{ margin: '0 0 10px 0' }}>{img.originalName}</h3>
+                                
+                                {hasLocation ? (
+                                    <p style={{ color: '#ffa94d', margin: '0 0 10px 0' }}>
+                                    ⚠️ Warning: Potential location metadata detected
+                                    </p>
+                                ) : (
+                                    <p style={{ color: '#51cf66', margin: '0 0 10px 0' }}>
+                                    ✓ No sensitive location metadata detected
+                                    </p>
+                                )}
 
-                            <small style={{ color: '#888' }}>
-                                Uploaded: {new Date(img.createdAt).toLocaleString()} | Size: {(img.fileSize / 1024).toFixed(1)} KB
-                            </small>
+                                <small style={{ color: '#888' }}>
+                                    Uploaded: {new Date(img.createdAt).toLocaleString()} | Size: {(img.fileSize / 1024).toFixed(1)} KB
+                                </small>
+
+                                <div style={{ marginTop: '12px' }}>
+                                    <button
+                                        onClick={() => {
+                                            setSelectedImage(img);
+                                            setCurrentView('warnings');
+                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        }}
+                                        style={{ padding: '6px 14px', cursor: 'pointer', background: '#5e5e5e', color: '#fff', border: 'none', borderRadius: '4px' }}
+                                        >
+                                        Inspect Image
+                                    </button>
+                                </div>
                             </div>
                         );
                         })}
