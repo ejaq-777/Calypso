@@ -29,6 +29,7 @@ app.listen(PORT, () => {
   console.log(`[Calypso Server] Running on http://localhost:${PORT}`);
 });
 
+// POST Image upload and metadata extraction route
 app.post('/api/images/upload', upload.single('image'), async (req: Request, res: Response) => {
   let tempFilePath: string | null = null;
   
@@ -96,6 +97,30 @@ app.post('/api/images/upload', upload.single('image'), async (req: Request, res:
   }
 });
 
+// GET list the latest stored images/metadata records
+app.get('/api/images', async (req: Request, res: Response) => {
+  try {
+    const warningsOnly = req.query.warningsOnly === 'true';
+
+    // Build the dynamic MongoDB query filter
+    const filter: any = {};
+    if (warningsOnly) {
+      // Find documents where location data exists and is not null/undefined
+      filter['location'] = { $exists: true, $ne: null };
+    }
+
+    const images = await ImageModel.find(filter, { data: 0 }) // Exclude the heavy binary buffer field
+      .sort({ createdAt: -1 })
+      .limit(10);
+
+    res.status(200).json(images);
+  } catch (error) {
+    console.error('Error fetching image list:', error);
+    res.status(500).json({ error: 'Failed to retrieve image list.' });
+  }
+});
+
+// GET retrieve detailed information of file id
 app.get('/api/images/file/:id', async (req: Request, res: Response) => {
   try {
     const imageDoc = await ImageModel.findById(req.params.id);

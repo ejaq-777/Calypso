@@ -4,6 +4,8 @@ return (
   
   <div style={{ position: 'absolute'}}>
     <img src="./src/assets/calypsoLogo.svg" width="160" height="160"/>
+    <p>Metadata Privacy</p>
+    <p>Manager</p>
   </div>
 
   <button 

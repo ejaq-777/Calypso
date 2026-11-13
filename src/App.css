@@ -34,9 +34,10 @@
   }
 
   .base {
-    width: 300px;
+    width: 400px;
     position: relative;
     object-fit: contain;
+    margin-left: 50px;
     z-index: 0;
   }
 

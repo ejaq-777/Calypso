@@ -1,23 +1,20 @@
-import dropFileSvg from './assets/dropFile.svg'
 import calypsoLogo from './assets/calypsoLogo.svg'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 import DropZone from './DropZone'
+import { type PageProps } from './types';
 
-function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
+function App({ setCurrentView, warningsOnly, setWarningsOnly }: PageProps) {
 
   return (
     <>
       <section id="topleft">
         <img src={calypsoLogo} className="base" width="160" height="160"/>
+        <p>Metadata Privacy</p>
+        <p>Manager</p>
       </section>
       <section id="center">
-        <div className="hero">
-          <img src={dropFileSvg} className="base" width="300" height="300" alt="" />
-          {/* <img src={reactLogo} className="framework" alt="React logo" /> */}
-          {/* <img src={viteLogo} className="vite" alt="Vite logo" /> */}
-        </div>
         <DropZone />
         <div>
           <h1>Drop a .JPEG file</h1>
@@ -35,7 +32,11 @@ function App({ setCurrentView }: { setCurrentView: (view: string) => void }) {
         <fieldset className="options">
           <legend>Options</legend>
           <label>
-            <input type="checkbox" name="option1" />
+            <input type="checkbox" 
+              name="option1" 
+              checked={warningsOnly}
+              onChange={(e) => setWarningsOnly(e.target.checked)}
+            />
             Display sensitive metadata only
           </label>
         </fieldset>

@@ -1,4 +1,5 @@
 import { useState, type DragEvent } from 'react';
+import dropFileSvg from './assets/dropFile.svg'
 
 export default function DropZone() {
   const [status, setStatus] = useState<string>('');
@@ -45,8 +46,14 @@ export default function DropZone() {
         textAlign: 'center',
         borderRadius: '8px',
         cursor: 'pointer',
+        marginTop: '20px',
       }}
     >
+      <div className="hero">
+          <img src={dropFileSvg} className="base" width="400" height="300"  alt="" />
+          {/* <img src={reactLogo} className="framework" alt="React logo" /> */}
+          {/* <img src={viteLogo} className="vite" alt="Vite logo" /> */}
+      </div>
       <p>Drop jpeg here to extract image data</p>
       <p style={{ fontWeight: 'bold', color: '#007bff' }}>{status}</p>
     </div>
