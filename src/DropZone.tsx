@@ -1,7 +1,7 @@
 import { useState, type DragEvent } from 'react';
 import dropFileSvg from './assets/dropFile.svg'
 
-export default function DropZone() {
+export default function DropZone({onUploadSuccess}: {onUploadSuccess?: () => void}) {
   const [status, setStatus] = useState<string>('');
 
   const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
@@ -23,6 +23,10 @@ export default function DropZone() {
       const data = await response.json();
       if (response.ok) {
         setStatus(`Success! Saved ID: ${data.id}`);
+
+        if (onUploadSuccess) {
+          onUploadSuccess();
+        }
       } else {
         setStatus(`Error: ${data.error}`);
       }

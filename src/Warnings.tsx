@@ -4,37 +4,37 @@ import { type PageProps } from './types';
 export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
   return (
     <div>
-      <div style={{ position: 'absolute' }}>
+      <div style={{ position: 'fixed' }}>
           <img src="./src/assets/calypsoLogo.svg" width="160" height="160" />
           <p>Metadata Privacy</p>
           <p>Manager</p>
+
+          {/* Navigation Buttons */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '200px', margin: '20px auto'}}>
+            <button 
+              onClick={() => {
+                setCurrentView('navigation'); 
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }} 
+              style={{ padding: '8px 16px', cursor: 'pointer', minWidth:'100px' }}
+              >
+              ← Back to Navigation
+            </button>
+            <button 
+            onClick={() => {
+              setCurrentView('App'); 
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }} 
+            style={{ padding: '8px 16px', minWidth:'100px', cursor: 'pointer' }}
+            >
+              Go to Home / Scan
+            </button>
+          </div>
       </div>
 
-      <div style={{ textAlign: 'center', paddingTop: '50px', color: 'white' }}>
+      <div style={{ textAlign: 'center', padding: '50px 0 0 200px', color: 'white' }}>
         <h1>Metadata Inspector</h1>
         <p>Detailed analysis for the selected image</p>
-      </div>
-
-      {/* Navigation Buttons */}
-      <div style={{ display: 'flex', gap: '15px', margin: '30px 50%'}}>
-        <button 
-          onClick={() => {
-            setCurrentView('navigation'); 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }} 
-          style={{ padding: '8px 16px', cursor: 'pointer', minWidth:'200px', marginLeft: '-200px' }}
-          >
-          ← Back to Navigation
-        </button>
-        <button 
-        onClick={() => {
-          setCurrentView('App'); 
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }} 
-        style={{ padding: '8px 31px', minWidth:'200px', cursor: 'pointer' }}
-        >
-          Go to Home / Scan
-        </button>
       </div>
 
       {!selectedImage ? (
@@ -50,7 +50,7 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
       ) : (
         <>
           {/* Warnings */}
-          <section style={{ marginTop: '30px' }}>
+          <section style={{ margin: '30px 0 0 200px' }}>
             <h2
               style={{
                 borderBottom: `2px solid ${selectedImage.location ? '#ffa94d' : '#51cf66'}`,
@@ -89,7 +89,7 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
           </section>
 
           {/* Full Metadata */}
-          <section style={{ marginTop: '50px' }}>
+          <section style={{ margin: '50px 0 0 200px' }}>
             <h2 style={{ borderBottom: '2px solid #555', paddingBottom: '8px' }}>
               Detailed Metadata List
             </h2>

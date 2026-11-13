@@ -4,8 +4,11 @@ import viteLogo from './assets/vite.svg'
 import './App.css'
 import DropZone from './DropZone'
 import { type PageProps } from './types';
+import { useImageCount } from './useImageCount';
 
 function App({ setCurrentView, warningsOnly, setWarningsOnly }: PageProps) {
+  
+  const { count, loading: loadingCount, refreshCount } = useImageCount(warningsOnly);
 
   return (
     <>
@@ -15,25 +18,26 @@ function App({ setCurrentView, warningsOnly, setWarningsOnly }: PageProps) {
         <p>Manager</p>
       </section>
       <section id="center">
-        <DropZone />
+        <DropZone onUploadSuccess={refreshCount}/>
         <div>
           <h1>Drop a .JPEG file</h1>
           <p>
-            Click Scan Image to view security risks
+            Click Scan to view security risks
           </p>
         </div>
         <button
           type="button"
           className="counter"
+          style={{ color: 'white', backgroundColor: warningsOnly ? '#b45d00' : '#00a11b' }}
           onClick={() => {
             setCurrentView('navigation'); 
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
-          Scan Image
+          Scan {loadingCount ? '...' : count} Images
         </button>
         <fieldset className="options">
-          <legend>Options</legend>
+          <legend>Filter Options</legend>
           <label>
             <input type="checkbox" 
               name="option1" 

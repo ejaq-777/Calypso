@@ -97,10 +97,29 @@ app.post('/api/images/upload', upload.single('image'), async (req: Request, res:
   }
 });
 
+// GET count of all stored image records
+app.get('/api/images/count', async (req: Request, res: Response) => {
+  try {
+    const warningsOnly = req.query.warningsOnly === 'true';
+    const filter: any = {};
+    if (warningsOnly) {
+      filter['location'] = { $exists: true, $ne: null };
+    }
+
+    const count = await ImageModel.countDocuments(filter);
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error('Error counting images:', error);
+    res.status(500).json({ error: 'Failed to retrieve image count.' });
+  }
+});
+
 // GET list the latest stored images/metadata records
 app.get('/api/images', async (req: Request, res: Response) => {
   try {
     const warningsOnly = req.query.warningsOnly === 'true';
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = parseInt(req.query.skip as string) || 0;
 
     // Build the dynamic MongoDB query filter
     const filter: any = {};
@@ -111,7 +130,8 @@ app.get('/api/images', async (req: Request, res: Response) => {
 
     const images = await ImageModel.find(filter, { data: 0 }) // Exclude the heavy binary buffer field
       .sort({ createdAt: -1 })
-      .limit(10);
+      .skip(skip)
+      .limit(limit);
 
     res.status(200).json(images);
   } catch (error) {
