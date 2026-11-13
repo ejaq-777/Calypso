@@ -154,56 +154,56 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
                 </p>
               ) : null} */}
 
-{timestampWarnings.length > 0 && (
-  <div style={{ marginTop: '15px', color: '#ffc078' }}>
-    <strong>⚠️ Timestamp Metadata Detected</strong>
-    <p>
-      This image contains date or time information that
-      could reveal when the photo was taken or modified.
-    </p>
-    <ul>
-      {timestampWarnings.map((field) => (
-        <li key={field}>
-          {field}: {String(metadata[field])}
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
+              {timestampWarnings.length > 0 && (
+                <div style={{ marginTop: '15px', color: '#ffc078' }}>
+                  <strong>⚠️ Timestamp Metadata Detected</strong>
+                  <p>
+                    This image contains date or time information that
+                    could reveal when the photo was taken or modified.
+                  </p>
+                  <ul>
+                    {timestampWarnings.map((field) => (
+                      <li key={field}>
+                        {field}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-{deviceWarnings.length > 0 && (
-  <div style={{ marginTop: '15px', color: '#ffc078' }}>
-    <strong>⚠️ Device Information Detected</strong>
-    <p>
-      This image contains device information that
-      could reveal the camera or software used.
-    </p>
-    <ul>
-      {deviceWarnings.map((field) => (
-        <li key={field}>
-          {field}: {String(metadata[field])}
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
+              {deviceWarnings.length > 0 && (
+                <div style={{ marginTop: '15px', color: '#ffc078' }}>
+                  <strong>⚠️ Device Information Detected</strong>
+                  <p>
+                    This image contains device information that
+                    could reveal the camera or software used.
+                  </p>
+                  <ul>
+                    {deviceWarnings.map((field) => (
+                      <li key={field}>
+                        {field}: {String(metadata[field])}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-{identityWarnings.length > 0 && (
-  <div style={{ marginTop: '15px', color: '#ffc078' }}>
-    <strong>⚠️ Personal Identity Metadata Detected</strong>
-    <p>
-      This image contains information that may reveal
-      the photographer's identity or ownership details.
-    </p>
-    <ul>
-      {identityWarnings.map((field) => (
-        <li key={field}>
-          {field}: {String(metadata[field])}
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
+              {identityWarnings.length > 0 && (
+                <div style={{ marginTop: '15px', color: '#ffc078' }}>
+                  <strong>⚠️ Personal Identity Metadata Detected</strong>
+                  <p>
+                    This image contains information that may reveal
+                    the photographer's identity or ownership details.
+                  </p>
+                  <ul>
+                    {identityWarnings.map((field) => (
+                      <li key={field}>
+                        {field}: {String(metadata[field])}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
 
               <small style={{ color: '#aaa' }}>
