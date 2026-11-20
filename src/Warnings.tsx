@@ -164,7 +164,7 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
                   <ul>
                     {timestampWarnings.map((field) => (
                       <li key={field}>
-                        {field}
+                        {field}: {String(metadata[field]?.rawValue ?? '')}
                       </li>
                     ))}
                   </ul>
