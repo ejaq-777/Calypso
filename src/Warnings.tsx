@@ -127,18 +127,18 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
             >
               <h3 style={{ margin: '0 0 10px 0' }}>{selectedImage.originalName}</h3>
 
-              {selectedImage.location && selectedImage.location.latitude ? (
-                <p style={{ color: '#ffc078', margin: '0 0 10px 0' }}>
+              {selectedImage.location && selectedImage.location.latitude && (
+                <div style={{ marginTop: '15px', color: '#ffc078' }}>
+                <strong>⚠️ Location Metadata Detected</strong>
+                <p style={{margin: '0 0 10px 0' }}>
                   GPS Location: Latitude {selectedImage.location.latitude}, Longitude {selectedImage.location.longitude}
                   {/* TODO: openstreetmap API to display location?
                   it may be a bad idea to give out location data
                   along with an IP address... */}
                 </p>
-              ) : (
-                <p style={{ color: '#51cf66', fontWeight: 'bold', margin: '0 0 10px 0' }}>
-                  ✓ No sensitive location metadata detected for this file.
-                </p>
+                </div>
               )}
+              {/* FIXME: duplicate.
               {selectedImage.metadata && (selectedImage.metadata.make || selectedImage.metadata.model) ? (
                 <p style={{ color: '#ffc078', margin: '0 0 10px 0' }}>
                   Camera Make: {selectedImage.metadata.make || 'Unknown Make'}
@@ -147,8 +147,8 @@ export default function Warnings({ setCurrentView, selectedImage }: PageProps) {
                 </p>
               ) : null}
 
-              {/* FIXME: needs formatting.
-               {selectedImage.metadata && (selectedImage.metadata.dateTimeOriginal || selectedImage.metadata.fileCreateDate) ? (
+              // FIXME: needs formatting. 
+              {selectedImage.metadata && (selectedImage.metadata.dateTimeOriginal || selectedImage.metadata.fileCreateDate) ? (
                 <p style={{ color: '#ffc078', margin: '0 0 10px 0' }}>
                   Original Date/Time: {selectedImage.metadata.dateTimeOriginal || selectedImage.metadata.fileCreateDate}
                 </p>
